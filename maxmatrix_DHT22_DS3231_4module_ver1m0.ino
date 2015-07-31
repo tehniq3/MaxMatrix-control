@@ -111,9 +111,9 @@ PROGMEM prog_uchar CH[] = {
 3, 8, B00000110, B00001001, B00000110, B00000000, B00000000, // ~
 };
  
-int data = 11;    // DIN pin of MAX7219 module
+int data = 12;    // DIN pin of MAX7219 module
 int load = 10;    // CS pin of MAX7219 module
-int clock = 13;  // CLK pin of MAX7219 module
+int clock = 11;  // CLK pin of MAX7219 module
  
 int maxInUse = 4;  //how many MAX7219 are connected
  
@@ -182,7 +182,7 @@ void loop(){
  delay(250);
  int t2 = 10*te; 
 
- printStringWithShift(string5, 20);  // Send scrolling Text
+ printStringWithShift(string5, 25);  // Send scrolling Text
 //printString(string4);
 // delay(2000);
 
@@ -213,7 +213,7 @@ str2.toCharArray(d,2);
 printString1("         ", 0);
 */
 
- printStringWithShift(string4, 20);  // Send scrolling Text
+ printStringWithShift(string4, 25);  // Send scrolling Text
 //printString(string4);
 // delay(2000);
 
@@ -232,7 +232,7 @@ int ora = now.hour();
 int minut = now.minute();
 //int second0 = now.second();
 
- printStringWithShift(string6, 20);  // Send scrolling Text
+ printStringWithShift(string6, 25);  // Send scrolling Text
 
 // clear the screen
 //printString1("         ", 0);
