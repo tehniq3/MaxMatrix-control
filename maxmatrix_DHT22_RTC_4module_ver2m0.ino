@@ -130,7 +130,7 @@ byte buffer[10];
 // Example testing sketch for various DHT humidity/temperature sensors
 // Written by ladyada, public domain
 #include "DHT.h"
-#define DHTPIN A0     // what pin we're connected to A2
+#define DHTPIN A2     // what pin we're connected to A2
 // Uncomment whatever type you're using!
 //#define DHTTYPE DHT11   // DHT 11 
 #define DHTTYPE DHT22   // DHT 22  (AM2302)
