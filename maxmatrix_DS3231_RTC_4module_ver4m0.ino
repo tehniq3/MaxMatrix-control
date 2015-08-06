@@ -153,7 +153,7 @@ RTC_DS1307 RTC; // Tells the RTC library that we're using a DS1307 RTC
 
 byte spid = 35; 
 
-int photocellPin = A1;     // the cell and 10K pulldown are connected to a0
+int photocellPin = A1;     // the cell and 4k7 pulldown are connected to A1
 int photocellReading;     // the analog reading from the analog resistor divider
 
 
