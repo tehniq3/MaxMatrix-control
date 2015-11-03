@@ -4,7 +4,7 @@
 // niq_ro from
 // http://arduinotehniq.blogspot.com
 // http://nicuflorica.blogspot.ro/
-// original sketch - ver.7.2, Craiova, Romania, 2.11.2015
+// original sketch - ver.7.2, Craiova, Romania, 03.11.2015
 // clear i2c bus: http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html
 /**
  * I2C_ClearBus
@@ -144,11 +144,19 @@ byte buffer[10];
  char string6[] = "    clock:        "; // Fixxed text
  char string7[] = "    date:        "; // Fixxed text
 */
+/*
 // roumanian language (in romana)
  char string4[] = "    temperatura:        "; // Fixxed text
  char string5[] = "    umiditate relativa:        "; // Fixxed text
  char string6[] = "    ceas:        "; // Fixxed text
  char string7[] = "    data:        "; // Fixxed text
+*/
+
+// no subtitles (fara comentarii)
+ char string4[] = "            "; // Fixxed text
+ char string5[] = "            "; // Fixxed text
+ char string6[] = "            "; // Fixxed text
+// char string7[] = "    data:        "; // Fixxed text
 
 
 // Example testing sketch for various DHT humidity/temperature sensors
@@ -175,7 +183,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 RTC_DS1307 RTC; // Tells the RTC library that we're using a DS1307 RTC
 
-byte spid = 35; 
+byte spid = 25; 
 
 int photocellPin = A1;     // the cell and 10K pulldown are connected to a0
 int photocellReading;     // the analog reading from the analog resistor divider
@@ -298,19 +306,18 @@ void setup(){
 // for DS18B20 sensor
 sensors.begin(); 
 
+ // 11 bit resolution by default (9 - low, 10, 11 or 12 - best)
+  // Note the programmer is responsible for the right delay
+  // we could do something usefull here instead of the delay
+  int resolution = 11;
+  sensors.setResolution(resolution);
+  delay(750/ (1 << (12-resolution)));
+
 }
  
 void loop(){
-/*
-  // read photocel
- photocellReading = analogRead(photocellPin);  
- 
- m.setIntensity(7-photocellReading/2000); // LED Intensity 0-15
-  Serial.print(photocellReading);     // the raw analog reading
-  Serial.println(" lux"); 
-*/
  lumina();
- 
+
   // Reading temperature or humidity 
  int has = dht.readHumidity();
 
@@ -319,18 +326,12 @@ void loop(){
 // int te = dht.readTemperature(); 
 */
 
- // 11 bit resolution by default (9 - low, 10, 11 or 12 - best)
-  // Note the programmer is responsible for the right delay
-  // we could do something usefull here instead of the delay
-  int resolution = 11;
-  sensors.setResolution(resolution);
-  delay(750/ (1 << (12-resolution)));
-
 // using DS18B20 ( http://arduinoprojects.ru/2014/08/%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9-%D1%82%D0%B5%D1%80%D0%BC%D0%BE%D1%81%D1%82%D0%B0%D1%82-%D0%BD%D0%B0-arduino-%D0%B8-%D1%86%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%BE%D0%BC-%D1%82%D0%B5%D1%80%D0%BC/ )
 sensors.requestTemperatures(); // запрос на получение температуры
 float te=(sensors.getTempCByIndex(0)); 
 
  delay(250);
+
  int t2 = 10*te; 
 // value for test display:
 // t2 = 297;
@@ -343,10 +344,8 @@ float te=(sensors.getTempCByIndex(0));
 // clear the screen
 printString1("         ", 0);
 */
-/*
  lumina();
  printStringWithShift(string4, spid);  // Send scrolling Text
-*/ 
 //printString(string4);
 // delay(2000);
  lumina();
@@ -388,26 +387,9 @@ printString1(d, 19);
 printString1("~C", 24);
   lumina();
  delay(5000);
-/*
+
  lumina();
  
- printStringWithShift(string5, spid);  // Send scrolling Text
-//printString(string4);
-// delay(2000);
-
- lumina();
-*/
-// http://www.arduino-hacks.com/converting-integer-to-character-vice-versa/
-char b[3];
-String str;
-str=String(has);
-str.toCharArray(b,3);
-// printString(b);
- printString1(b, 3);
-// delay(1000);
- printString1("%rh", 13);
- delay(2000);
-
 
  lumina();
 DateTime now = RTC.now();
@@ -422,7 +404,7 @@ int ziua=now.day();
 String data;
 //data = "       date:  ";
 //data = "       data:  ";
-data = "        ";
+data = "         ";  // no subtitle
 if (ziua >= 10) data = data + ziua;
 else data = data + "0" + ziua;
 data = data + ".";
@@ -446,10 +428,9 @@ printStringWithShift(data1, spid);  // Send scrolling Text
  lumina();
 //int second0 = now.second();
 //delay(500);
-/*
+
  printStringWithShift(string6, spid);  // Send scrolling Text
  lumina();
-*/ 
 // clear the screen
 //printString1("         ", 0);
 
@@ -475,19 +456,34 @@ else
   printString1("0", 19);
   printString1(f, 24);
 }
-for(int j=0; j<5; j++)
+for(int j=0; j<7; j++)   // time in seconds (j<7) for display hour
 {
 //printString1(e, 5);
 printString1(":", 15);
 //printString1(f, 19);
-delay(500);
+delay(700);
 printString1(" ", 15);
-delay(400);
+delay(300);
 }
-//delay(3000);
-  
- 
-}
+
+ printStringWithShift(string5, spid);  // Send scrolling Text
+//printString(string4);
+// delay(2000);
+
+ lumina();
+// http://www.arduino-hacks.com/converting-integer-to-character-vice-versa/
+char b[3];
+String str;
+str=String(has);
+str.toCharArray(b,3);
+// printString(b);
+ printString1(b, 3);
+// delay(1000);
+ printString1("%rh", 13);
+ delay(3000);   // time for display hunmidity (in ms)
+
+//delay(3000); 
+}   // end main loop
  
 // Put extracted character on Display
 void printCharWithShift(char c, int shift_speed){
